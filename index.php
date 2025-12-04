@@ -1,3 +1,6 @@
+<?php
+include 'connection.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -145,32 +148,7 @@
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 
-                <div class="animal-card bg-white rounded-3xl overflow-hidden shadow-lg">
-                    <div class="relative">
-                        <div class="h-48 bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center">
-                            <img src="https://cdn8.futura-sciences.com/a1280/images/actu/bonobo-singe-comprendre-ignorance.JPG" alt="">
-                        </div>
-                        <span class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-semibold text-red-600 shadow-md">
-                            🥩 Carnivore
-                        </span>
-                    </div>
-                    <div class="p-5">
-                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Singe</h3>
-                        <div class="flex items-center space-x-2 mb-4">
-                            <span class="habitat-badge bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
-                                🌊 Océan
-                            </span>
-                        </div>
-                        <div class="flex space-x-2">
-                            <button class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold transition">
-                                ✏️ Modifier
-                            </button>
-                            <button class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl font-semibold transition">
-                                🗑️ Supprimer
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                
                 
 
             </div>
