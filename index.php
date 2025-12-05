@@ -6,6 +6,24 @@ if (!empty($_POST["search"])) {
     echo $_POST["search"];
 }
 
+$total_anim = "select Nom from animals";
+$resu = $conn->query($total_anim);
+echo $resu->num_rows;
+// print_r($var->num_rows) 
+
+$Herbivores = "select * from animals where Type_alimentaire = '🌿 Herbivore'"; 
+$exc_herb = $conn->query($Herbivores);
+$total_herb = mysqli_fetch_all($exc_herb);
+echo count($total_herb);
+
+$Carnivores = "select * from animals where Type_alimentaire = '🥩 Carnivore' ";
+$total_carn = $conn->query($Carnivores);
+echo $total_carn->num_rows;
+
+$Omnivores = "select * from animals where Type_alimentaire = '🍽️ Omnivore' ";
+$total_omni = $conn->query($Omnivores);
+
+
 
 ?>
 <!DOCTYPE html>
@@ -92,7 +110,7 @@ if (!empty($_POST["search"])) {
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-orange-100 text-sm font-medium">Total Animaux</p>
-                        <p class="text-4xl font-bold mt-2">24</p>
+                        <p class="text-4xl font-bold mt-2"> <?= $resu->num_rows ?> </p>
                     </div>
                     <div class="text-6xl opacity-80">🦒</div>
                 </div>
@@ -102,7 +120,7 @@ if (!empty($_POST["search"])) {
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-green-100 text-sm font-medium">Herbivores</p>
-                        <p class="text-4xl font-bold mt-2">12</p>
+                        <p class="text-4xl font-bold mt-2"><?= count($total_herb) ?></p>
                     </div>
                     <div class="text-6xl opacity-80">🐘</div>
                 </div>
@@ -112,7 +130,7 @@ if (!empty($_POST["search"])) {
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-red-100 text-sm font-medium">Carnivores</p>
-                        <p class="text-4xl font-bold mt-2">8</p>
+                        <p class="text-4xl font-bold mt-2"> <?= $total_carn->num_rows ?> </p>
                     </div>
                     <div class="text-6xl opacity-80">🦁</div>
                 </div>
@@ -122,7 +140,7 @@ if (!empty($_POST["search"])) {
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-purple-100 text-sm font-medium">Omnivores</p>
-                        <p class="text-4xl font-bold mt-2">4</p>
+                        <p class="text-4xl font-bold mt-2"><?= $total_omni->num_rows ?> </p>
                     </div>
                     <div class="text-6xl opacity-80">🐻</div>
                 </div>
@@ -218,11 +236,11 @@ if (!empty($_POST["search"])) {
                 $result = $conn->query($sql);
 
                 // echo $result->num_rows ;
-                if($result->num_rows==0) {
+                if ($result->num_rows == 0) {
                     echo "makayn walo";
-                }else {
+                } else {
                     while ($row = $result->fetch_assoc()) {
-                    echo '<div class="animal-card bg-white rounded-3xl overflow-hidden shadow-lg">
+                        echo '<div class="animal-card bg-white rounded-3xl overflow-hidden shadow-lg">
                     <div class="relative">
                         <div class="h-48 w-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center">
                     <img src="' . $row['image'] . '" class="w-full h-full object-cover" alt="">
@@ -257,13 +275,13 @@ if (!empty($_POST["search"])) {
 </div>
                     </div>
                 </div>';
+                    }
                 }
-                }
-
-                
 
 
-                
+
+
+
 
                 ?>
 
@@ -364,6 +382,8 @@ if (!empty($_POST["search"])) {
             <p class="text-gray-400 text-sm mt-2">Apprendre les animaux en s'amusant !</p>
         </div>
     </footer>
+
+    
 
 </body>
 
