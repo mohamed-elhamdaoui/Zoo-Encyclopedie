@@ -1,30 +1,22 @@
 <?php
 include 'connection.php';
 
-
 if (!empty($_POST["search"])) {
     echo $_POST["search"];
 }
 
 $total_anim = "select Nom from animals";
 $resu = $conn->query($total_anim);
-echo $resu->num_rows;
-// print_r($var->num_rows) 
 
-$Herbivores = "select * from animals where Type_alimentaire = '🌿 Herbivore'"; 
+$Herbivores = "select * from animals where Type_alimentaire = '🌿 Herbivore'";
 $exc_herb = $conn->query($Herbivores);
 $total_herb = mysqli_fetch_all($exc_herb);
-echo count($total_herb);
 
 $Carnivores = "select * from animals where Type_alimentaire = '🥩 Carnivore' ";
 $total_carn = $conn->query($Carnivores);
-echo $total_carn->num_rows;
 
 $Omnivores = "select * from animals where Type_alimentaire = '🍽️ Omnivore' ";
 $total_omni = $conn->query($Omnivores);
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -53,6 +45,51 @@ $total_omni = $conn->query($Omnivores);
             animation: float 3s ease-in-out infinite;
         }
 
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
         @keyframes float {
 
             0%,
@@ -72,10 +109,6 @@ $total_omni = $conn->query($Omnivores);
 </head>
 
 <body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
-    <!-- <form action="index.php" method="post">
-        <input type="text" name="name">
-        <button type="submit" name="jiiib">jiiiiib</button>
-    </form> -->
 
     <!-- Navigation -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
@@ -110,7 +143,7 @@ $total_omni = $conn->query($Omnivores);
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-orange-100 text-sm font-medium">Total Animaux</p>
-                        <p class="text-4xl font-bold mt-2"> <?= $resu->num_rows ?> </p>
+                        <p class="text-4xl font-bold mt-2"><?= $resu->num_rows ?></p>
                     </div>
                     <div class="text-6xl opacity-80">🦒</div>
                 </div>
@@ -130,7 +163,7 @@ $total_omni = $conn->query($Omnivores);
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-red-100 text-sm font-medium">Carnivores</p>
-                        <p class="text-4xl font-bold mt-2"> <?= $total_carn->num_rows ?> </p>
+                        <p class="text-4xl font-bold mt-2"><?= $total_carn->num_rows ?></p>
                     </div>
                     <div class="text-6xl opacity-80">🦁</div>
                 </div>
@@ -140,7 +173,7 @@ $total_omni = $conn->query($Omnivores);
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-purple-100 text-sm font-medium">Omnivores</p>
-                        <p class="text-4xl font-bold mt-2"><?= $total_omni->num_rows ?> </p>
+                        <p class="text-4xl font-bold mt-2"><?= $total_omni->num_rows ?></p>
                     </div>
                     <div class="text-6xl opacity-80">🐻</div>
                 </div>
@@ -149,19 +182,16 @@ $total_omni = $conn->query($Omnivores);
 
         <!-- Filters -->
         <form method="POST" action="index.php" class="bg-white rounded-3xl shadow-xl p-6 mb-8">
-
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
                 <span class="text-3xl mr-3">🔍</span>
                 Rechercher des animaux
             </h2>
 
             <div class="flex flex-col lg:flex-row gap-4 items-end">
-
-                <!-- ✅ HABITAT -->
+                <!-- HABITAT -->
                 <div class="w-full lg:w-1/5">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Habitat</label>
-                    <select name="habitat"
-                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
+                    <select name="habitat" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
                         <option value="">Tous les habitats</option>
                         <option value="Savane">🌾 Savane</option>
                         <option value="Jungle">🌴 Jungle</option>
@@ -170,11 +200,10 @@ $total_omni = $conn->query($Omnivores);
                     </select>
                 </div>
 
-                <!-- ✅ TYPE -->
+                <!-- TYPE -->
                 <div class="w-full lg:w-1/5">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Type alimentaire</label>
-                    <select name="type"
-                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
+                    <select name="type" class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
                         <option value="">Tous les types</option>
                         <option value="🥩 Carnivore">🥩 Carnivore</option>
                         <option value="🌿 Herbivore">🌿 Herbivore</option>
@@ -182,29 +211,25 @@ $total_omni = $conn->query($Omnivores);
                     </select>
                 </div>
 
-                <!-- ✅ FILTER BUTTON -->
+                <!-- FILTER BUTTON -->
                 <div class="w-full lg:w-[12%]">
-                    <button type="submit" name="filter_select"
-                        class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold transition">
+                    <button type="submit" name="filter_select" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold transition">
                         ✅ Filtrer
                     </button>
                 </div>
 
-                <!-- ✅ SEARCH -->
+                <!-- SEARCH -->
                 <div class="w-full lg:flex-1">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Recherche</label>
-                    <input type="text" name="search" placeholder="Nom de l'animal..."
-                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
+                    <input type="text" name="search" placeholder="Nom de l'animal..." class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
                 </div>
 
-                <!-- ✅ SEARCH BUTTON -->
+                <!-- SEARCH BUTTON -->
                 <div class="w-full lg:w-[12%]">
-                    <button type="submit" name="filter_search"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+                    <button type="submit" name="filter_search" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
                         🔍 Rechercher
                     </button>
                 </div>
-
             </div>
         </form>
 
@@ -216,28 +241,26 @@ $total_omni = $conn->query($Omnivores);
             </h2>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-
                 <?php
                 $sql = 'select * FROM animals, habitats where animals.`idHab`=habitats.`idHab`';
 
-
                 if (!empty($_POST["type"])) {
                     $sql .= " and Type_alimentaire = '{$_POST["type"]}' ";
-                    // echo $_POST["type"];
                 }
                 if (!empty($_POST["habitat"])) {
                     $sql .= " and NamHab = '{$_POST["habitat"]}'";
                 }
-
                 if (isset($_POST["filter_search"]) && !empty($_POST["search"])) {
                     $sql .= " and Nom = '{$_POST["search"]}' ";
                 }
 
                 $result = $conn->query($sql);
 
-                // echo $result->num_rows ;
                 if ($result->num_rows == 0) {
-                    echo "makayn walo";
+                    echo '<div class="col-span-full text-center py-12">
+                            <div class="text-6xl mb-4">😢</div>
+                            <p class="text-2xl font-bold text-gray-600">Aucun animal trouvé</p>
+                          </div>';
                 } else {
                     while ($row = $result->fetch_assoc()) {
                         echo '<div class="animal-card bg-white rounded-3xl overflow-hidden shadow-lg">
@@ -260,9 +283,10 @@ $total_omni = $conn->query($Omnivores);
                         <div class="flex space-x-2">
 
     <!-- ✏️ MODIFY -->
-    <button class="flex-1 h-fit bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold transition">
-        ✏️ Modifier
-    </button>
+    <button onclick="openModal(' . $row["ID"] . ')"
+    class="flex-1 h-fit bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold transition">
+    ✏️ Modifier
+</button>
 
     <!-- 🗑️ DELETE -->
     <form action="delete_animal.php" method="POST" class="flex-1">
@@ -277,102 +301,12 @@ $total_omni = $conn->query($Omnivores);
                 </div>';
                     }
                 }
-
-
-
-
-
-
                 ?>
-
-
             </div>
         </div>
 
-        <!-- Habitats Section -->
-        <div class="mb-8">
-            <h2 class="text-3xl font-bold text-gray-800 mb-6 flex items-center">
-                <span class="text-4xl mr-3">🏠</span>
-                Les Habitats
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-                <!-- Habitat Card 1 -->
-                <div class="bg-gradient-to-br from-yellow-100 to-yellow-300 rounded-3xl p-6 shadow-lg hover:shadow-xl transition transform hover:scale-105">
-                    <div class="text-6xl mb-4 text-center">🌾</div>
-                    <h3 class="text-2xl font-bold text-gray-800 text-center mb-2">Savane</h3>
-                    <p class="text-gray-700 text-center mb-4 text-sm">Grande plaine herbeuse avec quelques arbres</p>
-                    <div class="text-center">
-                        <span class="bg-white px-4 py-2 rounded-full text-sm font-semibold text-yellow-700">12 animaux</span>
-                    </div>
-                    <div class="flex space-x-2 mt-4">
-                        <button class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold text-sm transition">
-                            ✏️ Modifier
-                        </button>
-                        <button class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl font-semibold text-sm transition">
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Habitat Card 2 -->
-                <div class="bg-gradient-to-br from-green-100 to-green-300 rounded-3xl p-6 shadow-lg hover:shadow-xl transition transform hover:scale-105">
-                    <div class="text-6xl mb-4 text-center">🌴</div>
-                    <h3 class="text-2xl font-bold text-gray-800 text-center mb-2">Jungle</h3>
-                    <p class="text-gray-700 text-center mb-4 text-sm">Forêt tropicale dense et humide</p>
-                    <div class="text-center">
-                        <span class="bg-white px-4 py-2 rounded-full text-sm font-semibold text-green-700">8 animaux</span>
-                    </div>
-                    <div class="flex space-x-2 mt-4">
-                        <button class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold text-sm transition">
-                            ✏️ Modifier
-                        </button>
-                        <button class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl font-semibold text-sm transition">
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Habitat Card 3 -->
-                <div class="bg-gradient-to-br from-orange-100 to-orange-300 rounded-3xl p-6 shadow-lg hover:shadow-xl transition transform hover:scale-105">
-                    <div class="text-6xl mb-4 text-center">🏜️</div>
-                    <h3 class="text-2xl font-bold text-gray-800 text-center mb-2">Désert</h3>
-                    <p class="text-gray-700 text-center mb-4 text-sm">Zone aride avec peu d'eau et beaucoup de sable</p>
-                    <div class="text-center">
-                        <span class="bg-white px-4 py-2 rounded-full text-sm font-semibold text-orange-700">3 animaux</span>
-                    </div>
-                    <div class="flex space-x-2 mt-4">
-                        <button class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold text-sm transition">
-                            ✏️ Modifier
-                        </button>
-                        <button class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl font-semibold text-sm transition">
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Habitat Card 4 -->
-                <div class="bg-gradient-to-br from-blue-100 to-blue-300 rounded-3xl p-6 shadow-lg hover:shadow-xl transition transform hover:scale-105">
-                    <div class="text-6xl mb-4 text-center">🌊</div>
-                    <h3 class="text-2xl font-bold text-gray-800 text-center mb-2">Océan</h3>
-                    <p class="text-gray-700 text-center mb-4 text-sm">Grande étendue d'eau salée</p>
-                    <div class="text-center">
-                        <span class="bg-white px-4 py-2 rounded-full text-sm font-semibold text-blue-700">5 animaux</span>
-                    </div>
-                    <div class="flex space-x-2 mt-4">
-                        <button class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold text-sm transition">
-                            ✏️ Modifier
-                        </button>
-                        <button class="flex-1 bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl font-semibold text-sm transition">
-                            🗑️
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
+        
+    </div>
     </div>
 
     <!-- Footer -->
@@ -383,7 +317,90 @@ $total_omni = $conn->query($Omnivores);
         </div>
     </footer>
 
-    
+    <!-- ✅ STYLED MODAL -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+
+        <div class="bg-white rounded-3xl shadow-2xl w-[450px] p-6 animate-fade-in">
+
+            <!-- ✅ TITLE -->
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                ✏️ Modifier l'animal
+            </h2>
+
+            <form action="update_animal.php" method="POST" class="space-y-4">
+
+                <!-- ✅ HIDDEN ID -->
+                <input type="hidden" name="id" id="animal_id" >
+
+                <!-- ✅ NAME -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                    <input type="text" name="nom" placeholder="Nom de l'animal"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <!-- ✅ TYPE -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Type alimentaire</label>
+                    <select name="type"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="🥩 Carnivore">Carnivore 🥩</option>
+                        <option value="🌿 Herbivore">Herbivore 🌿</option>
+                        <option value="🍽️ Omnivore">Omnivore 🍽️</option>
+                    </select>
+                </div>
+
+                <!-- ✅ HABITAT -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Habitat</label>
+                    <select name="habitat"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                        <option value="1">Savane</option>
+                        <option value="2">Jungle</option>
+                        <option value="3">Désert</option>
+                        <option value="4">Océan</option>
+                    </select>
+                </div>
+
+                <!-- ✅ IMAGE URL -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Image (URL)</label>
+                    <input type="text" name="image" placeholder="https://..."
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+
+                <!-- ✅ BUTTONS -->
+                <div class="flex justify-end gap-3 pt-4">
+
+                    <button type="button" onclick="closeModal()"
+                        class="px-5 py-2 rounded-xl bg-gray-400 hover:bg-gray-500 text-white font-semibold transition">
+                        Annuler
+                    </button>
+
+                    <button type="submit"
+                        class="px-5 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-semibold transition">
+                        Modifier
+                    </button>
+
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
+
+
+    <script>
+        function openModal(id) {
+            document.getElementById("animal_id").value = id;
+            document.getElementById("modal").classList.remove("hidden");
+        }
+
+        function closeModal() {
+            document.getElementById("modal").classList.add("hidden");
+        }
+    </script>
 
 </body>
 
