@@ -1,8 +1,16 @@
 <?php
 include 'connection.php';
+
+
+if (!empty($_POST["search"])) {
+    echo $_POST["search"];
+}
+
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,27 +21,44 @@ include 'connection.php';
         body {
             font-family: 'Fredoka', sans-serif;
         }
+
         .animal-card {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
+
         .animal-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
+
         .habitat-badge {
             animation: float 3s ease-in-out infinite;
         }
+
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
         }
+
         .stats-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
     </style>
 </head>
+
 <body class="bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 min-h-screen">
-    
+    <!-- <form action="index.php" method="post">
+        <input type="text" name="name">
+        <button type="submit" name="jiiib">jiiiiib</button>
+    </form> -->
+
     <!-- Navigation -->
     <nav class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -60,7 +85,7 @@ include 'connection.php';
     </nav>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         <!-- Stats Section -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <div class="bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl p-6 text-white shadow-xl">
@@ -72,7 +97,7 @@ include 'connection.php';
                     <div class="text-6xl opacity-80">🦒</div>
                 </div>
             </div>
-            
+
             <div class="bg-gradient-to-br from-green-400 to-green-600 rounded-3xl p-6 text-white shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
@@ -82,7 +107,7 @@ include 'connection.php';
                     <div class="text-6xl opacity-80">🐘</div>
                 </div>
             </div>
-            
+
             <div class="bg-gradient-to-br from-red-400 to-red-600 rounded-3xl p-6 text-white shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
@@ -92,7 +117,7 @@ include 'connection.php';
                     <div class="text-6xl opacity-80">🦁</div>
                 </div>
             </div>
-            
+
             <div class="bg-gradient-to-br from-purple-400 to-purple-600 rounded-3xl p-6 text-white shadow-xl">
                 <div class="flex items-center justify-between">
                     <div>
@@ -105,39 +130,65 @@ include 'connection.php';
         </div>
 
         <!-- Filters -->
-        <div class="bg-white rounded-3xl shadow-xl p-6 mb-8">
+        <form method="POST" action="index.php" class="bg-white rounded-3xl shadow-xl p-6 mb-8">
+
             <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
                 <span class="text-3xl mr-3">🔍</span>
                 Rechercher des animaux
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
+
+            <div class="flex flex-col lg:flex-row gap-4 items-end">
+
+                <!-- ✅ HABITAT -->
+                <div class="w-full lg:w-1/5">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Habitat</label>
-                    <select class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition">
-                        <option>Tous les habitats</option>
-                        <option>🌾 Savane</option>
-                        <option>🌴 Jungle</option>
-                        <option>🏜️ Désert</option>
-                        <option>🌊 Océan</option>
+                    <select name="habitat"
+                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
+                        <option value="">Tous les habitats</option>
+                        <option value="Savane">🌾 Savane</option>
+                        <option value="Jungle">🌴 Jungle</option>
+                        <option value="Désert">🏜️ Désert</option>
+                        <option value="Océan">🌊 Océan</option>
                     </select>
                 </div>
-                
-                <div>
+
+                <!-- ✅ TYPE -->
+                <div class="w-full lg:w-1/5">
                     <label class="block text-sm font-semibold text-gray-700 mb-2">Type alimentaire</label>
-                    <select class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition">
-                        <option>Tous les types</option>
-                        <option>🥩 Carnivore</option>
-                        <option>🌿 Herbivore</option>
-                        <option>🍽️ Omnivore</option>
+                    <select name="type"
+                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
+                        <option value="">Tous les types</option>
+                        <option value="🥩 Carnivore">🥩 Carnivore</option>
+                        <option value="🌿 Herbivore">🌿 Herbivore</option>
+                        <option value="🍽️ Omnivore">🍽️ Omnivore</option>
                     </select>
                 </div>
-                
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Recherche</label>
-                    <input type="text" placeholder="Nom de l'animal..." class="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition">
+
+                <!-- ✅ FILTER BUTTON -->
+                <div class="w-full lg:w-[12%]">
+                    <button type="submit" name="filter_select"
+                        class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-xl font-semibold transition">
+                        ✅ Filtrer
+                    </button>
                 </div>
+
+                <!-- ✅ SEARCH -->
+                <div class="w-full lg:flex-1">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">Recherche</label>
+                    <input type="text" name="search" placeholder="Nom de l'animal..."
+                        class="w-full px-4 py-3 rounded-xl border-2 border-gray-200">
+                </div>
+
+                <!-- ✅ SEARCH BUTTON -->
+                <div class="w-full lg:w-[12%]">
+                    <button type="submit" name="filter_search"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition">
+                        🔍 Rechercher
+                    </button>
+                </div>
+
             </div>
-        </div>
+        </form>
 
         <!-- Animals Grid -->
         <div class="mb-8">
@@ -145,11 +196,64 @@ include 'connection.php';
                 <span class="text-4xl mr-3">🦁</span>
                 Nos Animaux
             </h2>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                
-                
-                
+
+                <?php
+                $sql = 'select * FROM animals, habitats where animals.`idHab`=habitats.`idHab`';
+
+
+                if (!empty($_POST["type"])) {
+                    $sql .= " and Type_alimentaire = '{$_POST["type"]}' ";
+                    // echo $_POST["type"];
+                }
+                if (!empty($_POST["habitat"])) {
+                    $sql .= " and NamHab = '{$_POST["habitat"] }'";
+                }
+
+                    $result = $conn->query($sql);
+
+
+                while ($row = $result->fetch_assoc()) {
+                    echo '<div class="animal-card bg-white rounded-3xl overflow-hidden shadow-lg">
+                    <div class="relative">
+                        <div class="h-48 w-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center">
+                    <img src="' . $row['image'] . '" class="w-full h-full object-cover" alt="">
+                    </div>
+
+                        <span class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-semibold text-red-600 shadow-md">
+                           ' . $row["Type_alimentaire"] . '
+                        </span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-2">' . $row["Nom"] . '</h3>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <span class="habitat-badge bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-medium">
+                                ' . $row["NamHab"] . '
+                            </span>
+                        </div>
+                        <div class="flex space-x-2">
+
+    <!-- ✏️ MODIFY -->
+    <button class="flex-1 h-fit bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-xl font-semibold transition">
+        ✏️ Modifier
+    </button>
+
+    <!-- 🗑️ DELETE -->
+    <form action="delete_animal.php" method="POST" class="flex-1">
+        <button type="submit" name="id" value="' . $row["ID"] . '"
+            class="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl font-semibold transition">
+            🗑️ Supprimer
+        </button>
+    </form>
+
+</div>
+                    </div>
+                </div>';
+                }
+
+                ?>
+
 
             </div>
         </div>
@@ -160,9 +264,9 @@ include 'connection.php';
                 <span class="text-4xl mr-3">🏠</span>
                 Les Habitats
             </h2>
-            
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
+
                 <!-- Habitat Card 1 -->
                 <div class="bg-gradient-to-br from-yellow-100 to-yellow-300 rounded-3xl p-6 shadow-lg hover:shadow-xl transition transform hover:scale-105">
                     <div class="text-6xl mb-4 text-center">🌾</div>
@@ -249,4 +353,5 @@ include 'connection.php';
     </footer>
 
 </body>
+
 </html>
