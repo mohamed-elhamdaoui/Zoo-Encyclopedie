@@ -208,13 +208,20 @@ if (!empty($_POST["search"])) {
                     // echo $_POST["type"];
                 }
                 if (!empty($_POST["habitat"])) {
-                    $sql .= " and NamHab = '{$_POST["habitat"] }'";
+                    $sql .= " and NamHab = '{$_POST["habitat"]}'";
                 }
 
-                    $result = $conn->query($sql);
+                if (isset($_POST["filter_search"]) && !empty($_POST["search"])) {
+                    $sql .= " and Nom = '{$_POST["search"]}' ";
+                }
 
+                $result = $conn->query($sql);
 
-                while ($row = $result->fetch_assoc()) {
+                // echo $result->num_rows ;
+                if($result->num_rows==0) {
+                    echo "makayn walo";
+                }else {
+                    while ($row = $result->fetch_assoc()) {
                     echo '<div class="animal-card bg-white rounded-3xl overflow-hidden shadow-lg">
                     <div class="relative">
                         <div class="h-48 w-full bg-gradient-to-br from-blue-200 to-blue-400 flex items-center justify-center">
@@ -251,6 +258,12 @@ if (!empty($_POST["search"])) {
                     </div>
                 </div>';
                 }
+                }
+
+                
+
+
+                
 
                 ?>
 
