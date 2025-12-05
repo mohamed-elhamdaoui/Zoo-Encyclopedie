@@ -102,6 +102,22 @@ $total_omni = $conn->query($Omnivores);
             }
         }
 
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.25s ease-out;
+        }
+
         .stats-card {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
@@ -124,8 +140,8 @@ $total_omni = $conn->query($Omnivores);
                     </div>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button class="bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition">
-                        ➕ Ajouter Animal
+                    <button onclick="openAddModal()" class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-xl font-semibold">
+                        ➕ Ajouter un animal
                     </button>
                     <button class="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-3 rounded-full font-semibold hover:shadow-lg transform hover:scale-105 transition">
                         🏠 Ajouter Habitat
@@ -305,7 +321,7 @@ $total_omni = $conn->query($Omnivores);
             </div>
         </div>
 
-        
+
     </div>
     </div>
 
@@ -330,7 +346,7 @@ $total_omni = $conn->query($Omnivores);
             <form action="update_animal.php" method="POST" class="space-y-4">
 
                 <!-- ✅ HIDDEN ID -->
-                <input type="hidden" name="id" id="animal_id" >
+                <input type="hidden" name="id" id="animal_id">
 
                 <!-- ✅ NAME -->
                 <div>
@@ -389,6 +405,81 @@ $total_omni = $conn->query($Omnivores);
 
     </div>
 
+    <!-- ✅ ADD ANIMAL MODAL -->
+    <div id="addModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
+
+        <div class="bg-white rounded-3xl shadow-2xl w-[450px] p-6 animate-fade-in">
+
+            <!-- ✅ TITLE -->
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+                ➕ Ajouter un animal
+            </h2>
+
+            <form action="add_animal.php" method="POST" class="space-y-4">
+
+                <!-- ✅ NAME -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+                    <input type="text" name="nom" placeholder="Nom de l'animal"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+                        required>
+                </div>
+
+                <!-- ✅ TYPE -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Type alimentaire</label>
+                    <select name="type"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+                        required>
+                        <option value="">-- Choisir --</option>
+                        <option value="🥩 Carnivore">Carnivore 🥩</option>
+                        <option value="🌿 Herbivore">Herbivore 🌿</option>
+                        <option value="🍽️ Omnivore">Omnivore 🍽️</option>
+                    </select>
+                </div>
+
+                <!-- ✅ HABITAT -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Habitat</label>
+                    <select name="habitat"
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+                        required>
+                        <option value="">-- Choisir --</option>
+                        <option value="1">Savane</option>
+                        <option value="2">Jungle</option>
+                        <option value="4">Désert</option>
+                        <option value="3">Océan</option>
+                    </select>
+                </div>
+
+                <!-- ✅ IMAGE URL -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Image (URL)</label>
+                    <input type="text" name="image" placeholder="https://..."
+                        class="w-full border border-gray-300 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+                        required>
+                </div>
+
+                <!-- ✅ BUTTONS -->
+                <div class="flex justify-end gap-3 pt-4">
+
+                    <button type="button" onclick="closeAddModal()"
+                        class="px-5 py-2 rounded-xl bg-gray-400 hover:bg-gray-500 text-white font-semibold transition">
+                        Annuler
+                    </button>
+
+                    <button type="submit"
+                        class="px-5 py-2 rounded-xl bg-green-500 hover:bg-green-600 text-white font-semibold transition">
+                        Ajouter
+                    </button>
+
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+
 
 
     <script>
@@ -399,6 +490,16 @@ $total_omni = $conn->query($Omnivores);
 
         function closeModal() {
             document.getElementById("modal").classList.add("hidden");
+        }
+
+
+
+        function openAddModal() {
+            document.getElementById("addModal").classList.remove("hidden");
+        }
+
+        function closeAddModal() {
+            document.getElementById("addModal").classList.add("hidden");
         }
     </script>
 
